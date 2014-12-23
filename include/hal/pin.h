@@ -53,6 +53,15 @@ BEGIN_DECLS
  * @brief Pin Peripheral Clock manipulation
  *
  *@{*/
+
+/*---------------------------------------------------------------------------*/
+/** @brief Enable peripheral clock for port occupying specified pin
+ *
+ * @note should be called before any config done on that pin, or all ports
+ * should have clocks enabled prior to use.
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_clock_enable(const uint32_t pin);
 /**@}*/
 
@@ -68,6 +77,13 @@ static void pin_clock_enable(const uint32_t pin);
  
 /*---------------------------------------------------------------------------*/
 /** @brief Get the actual pin state
+ *
+ * This function returns actual voltage level on the pin.
+ *
+ * @note If the pin was configured as an output, the function can return
+ * opposite level, than the one that is used for output, indicating signal
+ * collision on that pin. Collisions are not recommended for high-speed
+ * settings for the output.
  *
  * @param[in] pin pin name (@ref pin_name_base)
  * @returns true, if pin is held high, false otherwise
@@ -102,8 +118,30 @@ static void pin_toggle(const uint32_t pin);
  * @brief Pin pullup manipulation
  *
  *@{*/
+
+/*---------------------------------------------------------------------------*/
+/** @brief Disable pullups or pulldowns on specified pin
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_pull_disable(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set PullDown on the pin
+ *
+ * After call, unconnected input pin should read 0 (false/low level)
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_pull_down(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set PullUp on the pin
+ *
+ * After call, unconnected input pin should read 1 (true/high level)
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_pull_up(const uint32_t pin);
 /**@}*/
 
@@ -116,11 +154,52 @@ static void pin_pull_up(const uint32_t pin);
  * @brief Pin direction manipulation
  *
  *@{*/
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin to GPIO Output mode, source and sink
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_output_pushpull(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin to GPIO Output mode, sink only
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_output_opendrain(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin to AuxFn Output mode, source and sink
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_af_pushpull(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin to AuxFn Output mode, sink only
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_af_opendrain(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin to Input mode
+ *
+ * @note In this mode, the pin_speed_* functions are useless
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_input(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin to Analog mode
+ *
+ * This mode disconnects all digital electronics from the pin, allowing to
+ * float everywhere between 0 and VDD of the chip.
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_analog(const uint32_t pin);
 /**@}*/
 
@@ -133,9 +212,57 @@ static void pin_analog(const uint32_t pin);
  * @brief Pin speed manipulation
  *
  *@{*/
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin speed to slowest mode
+ *
+ * As an side effect, maximum current draw from/to the pin will be very limited.
+ *
+ * @warning Should be called after output mode set. Do not call when pin is in
+ * input or analog mode.
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_speed_low(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin speed to medium speed mode
+ *
+ * As an side effect, maximum current draw from/to the pin will be limited.
+ *
+ * @warning Should be called after output mode set. Do not call when pin is in
+ * input or analog mode.
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_speed_medium(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin speed to fast mode
+ *
+ * As an side effect, maximum current draw from/to the pin will be less limited.
+ *
+ * @warning Should be called after output mode set. Do not call when pin is in
+ * input or analog mode.
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_speed_fast(const uint32_t pin);
+
+/*---------------------------------------------------------------------------*/
+/** @brief Set pin speed to highest mode
+ *
+ * As an side effect, maximum current draw from/to the pin will not be limited,
+ * allowing external device may destroy the pin during collision.
+ *
+ * @warning Should be called after output mode set. Do not call when pin is in
+ * input or analog mode.
+ *
+ * @note when architecture doesn't support this mode, the meaning should be
+ * same as @ref pin_speed_fast function
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ */
 static void pin_speed_high(const uint32_t pin);
 /**@}*/
 
@@ -148,6 +275,17 @@ static void pin_speed_high(const uint32_t pin);
  * @brief Pin Alternate Function manipulation
  *
  *@{*/
+
+/*---------------------------------------------------------------------------*/
+/** @brief Map the alternate function to the pin
+ *
+ * The AF should be emulated on architectures, they doesn't support AF mapping.
+ * @warning care must be taken because one call can touch mapping of other pins
+ * in one call on architectures they doesn't support AF mapping.
+ *
+ * @param[in] pin pin name (@ref pin_name_base)
+ * @param[in] af AF index (@ref pin_name_base)
+ */
 static void pin_af_map(const uint32_t pin, const uint32_t af);
 /**@}*/
 
