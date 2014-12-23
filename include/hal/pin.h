@@ -25,7 +25,14 @@
  * Basic example of usage:
  * 
  * \includelineno pin/blink_basic.c
+ * 
+ * Extended usage with board dependency:
  *
+ * \includelineno pin/blink_multiboard.c
+ *
+ * Extended usage with alternate function selection:
+ *
+ * \includelineno pin/periph_altfn.c
  */
 #ifndef HAL_PIN_H_INCLUDED
 #define HAL_PIN_H_INCLUDED
