@@ -42,6 +42,41 @@ INLINE uint32_t _pin_pinno(const uint32_t pin)
 	return pin & 15;
 }
 
+INLINE void pin_clock_enable(const uint32_t pin)
+{
+	switch (_pin_port(pin)) {
+#if defined(GPIO_PORT_A_BASE)
+	case GPIOA: rcc_periph_clock_enable(RCC_GPIOA); break;
+#endif
+#if defined(GPIO_PORT_B_BASE)
+	case GPIOB: rcc_periph_clock_enable(RCC_GPIOB); break;
+#endif
+#if defined(GPIO_PORT_C_BASE)
+	case GPIOC: rcc_periph_clock_enable(RCC_GPIOC); break;
+#endif
+#if defined(GPIO_PORT_D_BASE)
+	case GPIOD: rcc_periph_clock_enable(RCC_GPIOD); break;
+#endif
+#if defined(GPIO_PORT_E_BASE)
+	case GPIOE: rcc_periph_clock_enable(RCC_GPIOE); break;
+#endif
+#if defined(GPIO_PORT_F_BASE)
+	case GPIOF: rcc_periph_clock_enable(RCC_GPIOF); break;
+#endif
+#if defined(GPIO_PORT_G_BASE)
+	case GPIOG: rcc_periph_clock_enable(RCC_GPIOG); break;
+#endif
+#if defined(GPIO_PORT_H_BASE)
+	case GPIOH: rcc_periph_clock_enable(RCC_GPIOH); break;
+#endif
+#if defined(GPIO_PORT_I_BASE)
+	case GPIOI: rcc_periph_clock_enable(RCC_GPIOI); break;
+#endif
+	default:
+		break;
+	}
+}
+
 INLINE void _pin_setmode(uint32_t pin, const uint32_t mode)
 {
 	const uint32_t pinid = (_pin_pinno(pin) < 8) ? (_pin_pin(pin)*4) : ((_pin_pin(pin)-8)*4);

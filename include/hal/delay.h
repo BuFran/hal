@@ -42,7 +42,7 @@ BEGIN_DECLS
 /*---------------------------------------------------------------------------*/
 /** @brief Spin-wait delay, spinning specified amount of processor cycles
  *
- * @note this function can be used for delays of max 2500000 cycles. 
+ * @note this function can be used for delays of max 2500000 cycles.
  * For larger delays, please consider using timers or other waiting techniques.
  *
  * @param[in] cycles Cycles count need to spent in spin-wait
@@ -81,8 +81,10 @@ END_DECLS
 /* Architecture dependent implementations                                    */
 /*****************************************************************************/
 
+static void _delay_3t(uint32_t cycles) __attribute__((naked));
+
 /* 3 Tcyc per tick, 4Tcyc call/ret, 1Tcyc hidden reg assignment */
-static void _delay_3t(uint32_t cycles) __attribute__((naked))
+static void _delay_3t(uint32_t cycles)
 {
 	asm __volatile__ (
 		"1: \n"
@@ -100,14 +102,14 @@ INLINE void delay_cycles(const int64_t cycles)
 {
 	if (cycles <= 0)
 		return;
-	
+
 	switch (cycles % 3) {
 	default:
 	case 0: break;
 	case 1: asm __volatile__ ("nop"); break;
 	case 2: asm __volatile__ ("nop\nnop"); break;
 	}
-	
+
 	if (cycles > 3)
 		_delay_3t((uint32_t)(cycles / 3));
 	else /* same delay as the function call */
@@ -131,7 +133,7 @@ INLINE void delay_ms(uint32_t ms, uint64_t cpufreq)
 {
 	if (ms == 0)
 		return;
-	
+
 	delay_cycles(ms * cpufreq / 1000 - 6);
 }
 

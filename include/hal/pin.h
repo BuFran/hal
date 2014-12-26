@@ -21,11 +21,11 @@
  * @ingroup modules
  *
  * LGPL License Terms @ref lgpl_license
- * 
+ *
  * Basic example of usage:
- * 
+ *
  * \includelineno pin/blink_basic.c
- * 
+ *
  * Extended usage with board dependency:
  *
  * \includelineno pin/blink_multiboard.c
@@ -81,7 +81,7 @@ static void pin_clock_enable(const uint32_t pin);
  * @brief Pin state manipulation
  *
  *@{*/
- 
+
 /*---------------------------------------------------------------------------*/
 /** @brief Get the actual pin state
  *
@@ -101,7 +101,7 @@ static bool pin_get(const uint32_t pin);
 /** @brief Set the pin state
  *
  * @param[in] pin pin name (@ref pin_name_base)
- * @param[in] val value to set 
+ * @param[in] val value to set
  */
 static void pin_set(const uint32_t pin, bool val);
 
@@ -303,21 +303,21 @@ END_DECLS
 /*****************************************************************************/
 
 #if defined(STM32F0)
-# include <lib/arch/stm32/pin_v1.h>
+# include <hal/arch/stm32/pin_v1.h>
 #elif defined(STM32F1)
 # include <hal/arch/stm32/pin_v0.h>
 #elif defined(STM32F2)
-# include <lib/arch/stm32/pin_v1.h>
+# include <hal/arch/stm32/pin_v1.h>
 #elif defined(STM32F3)
-# include <lib/arch/stm32/pin_v1.h>
+# include <hal/arch/stm32/pin_v1.h>
 #elif defined(STM32F4)
-# include <lib/arch/stm32/pin_v1.h>
+# include <hal/arch/stm32/pin_v1.h>
 #elif defined(STM32F7)
-# include <lib/arch/stm32/pin_v1.h>
+# include <hal/arch/stm32/pin_v1.h>
 #elif defined(STM32L0)
-# include <lib/arch/stm32/pin_v1.h>
+# include <hal/arch/stm32/pin_v1.h>
 #elif defined(STM32L1)
-# include <lib/arch/stm32/pin_v1.h>
+# include <hal/arch/stm32/pin_v1.h>
 #else
 # error "hal/pin.h have not defined your architecture."
 #endif
