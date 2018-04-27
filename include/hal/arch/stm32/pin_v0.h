@@ -22,6 +22,7 @@
 #endif
 
 #include <hal/arch/stm32/pin_common.h>
+#include <libopencm3/cm3/nvic.h>
 
 BEGIN_DECLS
 
