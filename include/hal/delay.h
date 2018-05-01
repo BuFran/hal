@@ -87,10 +87,12 @@ static void _delay_3t(uint32_t cycles) __attribute__((naked));
 static void _delay_3t(uint32_t cycles)
 {
 	asm __volatile__ (
+        ".syntax unified\n"
 		"1: \n"
 		"	subs %[cyc],#1 \n"	/* 1Tck */
 		"	bne 1b \n"		/* 2Tck */
 		"	bx lr \n"
+		".syntax divided\n"
 		: /* No output */
 		: [cyc] "r" (cycles)
 		: /* No memory */
